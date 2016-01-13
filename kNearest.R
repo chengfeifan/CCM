@@ -1,0 +1,11 @@
+KNearest<-function(x,i,k=2){
+  xt<-x[i,]
+  distance<-unlist(apply(x,1,function(xx){
+    return(euclidean(xx,xt))
+  }))
+  location<-c(1:nrow(x))
+  data<-data.frame(location,distance)
+  dataSort<-data[order(data[,'distance']),]
+  dataReturn<-dataSort[2:(k+1),]
+  return(dataReturn)
+}

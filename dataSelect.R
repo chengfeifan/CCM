@@ -3,7 +3,9 @@
 #y: sequence 2
 #lag: Time lag
 #tag: the position of beginning to select the data
-dataSelect<-function(x,y,lag,tag){
+dataSelect<-function(x,y,lag,tag,dimension=2){
+  x<-standize(x)
+  y<-standize(y)
   xLen<-length(x)
   yLen<-length(y)
   if(xLen!=yLen){
@@ -11,14 +13,18 @@ dataSelect<-function(x,y,lag,tag){
     return(NULL)
   }
   else{
-    tag<-tag[which(tag+lag<xLen+1 & tag+lag>0)]
-    dataRange<-unlist(lapply(tag,function(tagdot){
-      xdot<-x[tagdot]
+    tag<-tag[which(tag+dimension*lag<xLen+1 & tag+dimension*lag>0)]
+    dataRange<-lapply(tag,function(tagdot){
+      xdot<-x[seq(tagdot,tagdot+dimension*lag,lag)]
       ydot<-y[tagdot+lag]
       return(list(xdot,ydot))
-    }))
-    dataX<-dataRange[seq(1,length(dataRange),2)]
-    dataY<-dataRange[seq(2,length(dataRange),2)]
+    })
+    dataX<-dataRange[[1]][[1]]
+    dataY<-dataRange[[1]][[2]]
+    for(i in 2:length(dataRange)){
+      dataX<-rbind(dataX,dataRange[[i]][[1]])
+      dataY<-rbind(dataY,dataRange[[i]][[2]])
+    }
     return(list(dataX,dataY))
   }
 }

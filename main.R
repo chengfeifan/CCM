@@ -1,0 +1,43 @@
+x<-c(1:100)
+y<-c(101:200)
+tag<-floor(runif(1000,1,10000))
+tag<-tag[!duplicated(tag)]
+myCCM(x,y,tag=tag,lag=3)
+
+x<-x4
+y<-x1
+tlag=c(1:20)
+tag<-floor(runif(1000,1,10000))
+tag<-tag[!duplicated(tag)]
+corX_Y<-unlist(lapply(tlag,function(i){
+  corY<-myCCM(x,y,tag=tag,lag=i)
+  return(corY)
+}))
+corX<-corX_Y[seq(2,length(corX_Y),2)]
+
+x<-x1
+y<-x4
+tlag=c(1:20)
+set.seed(1)
+tag<-floor(runif(1000,1,10000))
+tag<-tag[!duplicated(tag)]
+corY_X<-unlist(lapply(tlag,function(i){
+  corY<-myCCM(x,y,tag=tag,lag=i)
+  return(corY)
+}))
+corY<-corY_X[seq(2,length(corY_X),2)]
+par(mfrow=c(2,1))
+plot(corY,type="l")
+plot(corX,type="l")
+
+x<-x1
+y<-x4
+tlag=c(1:20)
+set.seed(1)
+tag<-floor(runif(1000,1,10000))
+tag<-tag[!duplicated(tag)]
+corY_X<-unlist(lapply(tlag,function(i){
+  corY<-myCCM(x,y,tag=tag,lag=i)
+  return(corY)
+}))
+corY<-corY_X[seq(2,length(corY_X),2)]

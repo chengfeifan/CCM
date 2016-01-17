@@ -1,9 +1,9 @@
 #To select the ramdon data from the sequence x and y
-#x: sequence 1
-#y: sequence 2
+#x: time sequence 1
+#y: time sequence 2
 #lag: Time lag
 #tag: the position of beginning to select the data
-dataSelect<-function(x,y,lag,tag,dimension=2){
+dataSelect<-function(x,y,lag,tag,dimension){
   x<-standize(x)
   y<-standize(y)
   xLen<-length(x)

@@ -4,8 +4,6 @@
 #lag: time lag
 #tag:  the position of beginning to select the data
 #dimension: the dimension of embedding dimension
-x<-data[[1]]
-y<-data[[2]]
 myCCM<-function(x,y,dist=euclidean,lag,tag,dimension=2,k=2){
   xRow<-nrow(x)
   xCol<-ncol(x)

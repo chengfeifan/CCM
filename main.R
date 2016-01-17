@@ -7,6 +7,7 @@
 main<-function(x,y,maxLag=20,timestep=1,partion=0.1){
   tagLen<-partion*length(x)
   tag<-floor(runif(tagLen,1,length(x)))
+  tag<-tag[!duplicated(tag)]
   lagList<-seq(timestep,maxLag,timestep)
   # y cause x
   corY_X<-unlist(lapply(tlag,function(i){
@@ -25,8 +26,8 @@ main<-function(x,y,maxLag=20,timestep=1,partion=0.1){
   # plot the result
   opar<-par(no.readonly = TRUE)
   par(lty=2,pch=2,lwd=2)
-  plot(tagLen,corX,ylim=c(0,1),col="blue",type="b",xlab="Timestep",ylab = "ro")
-  lines(tagLen,corY,col="red",type="b")
+  plot(lagList,corX,ylim=c(0,1),col="blue",type="b",xlab="Timestep",ylab = "ro")
+  lines(lagList,corY,col="red",type="b")
   legend("topright",legend=c("y cause x","x cause y"),col=c("blue","red"),pch=2,lty=2)
   grid()
   par(opar)

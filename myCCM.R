@@ -5,12 +5,14 @@
 #tag:  the position of beginning to select the data
 #dimension: the dimension of embedding dimension
 myCCM<-function(x,y,dist=euclidean,lag,tag,dimension=2,k=2){
+  library(parallel)
   dataS<-dataSelect(x,y,lag,tag,dimension)
   x<-dataS[[1]]
   y<-dataS[[2]]
   xRow=nrow(x)
   number<-c(1:xRow)
-  yEstimate<-unlist(lapply(number,function(i){
+  makeCluster(getOption("cl.cores",8))
+  yEstimate<-unlist(parLapply(cl,number,function(i){
     dataN<-kNearest(x,i)
     yN<-y[dataN[,'location']]
     u<-exp(-(dataN[,'distance']/max(dataN[,'distance'])))
@@ -18,6 +20,7 @@ myCCM<-function(x,y,dist=euclidean,lag,tag,dimension=2,k=2){
     yE<-sum(yN*w)
     return(yE)
   }))
+  stopCluster(cl)
   corY<-cor(y,yEstimate)
   return(list(lag,corY))
 }

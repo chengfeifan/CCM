@@ -21,6 +21,7 @@ dataSelect<-function(x,y,lag,tag,dimension){
       ydot<-y[tagdot+lag]
       return(list(xdot,ydot))
     })
+    stopCluster(cl)
     dataX<-dataRange[[1]][[1]]
     dataY<-dataRange[[1]][[2]]
     for(i in 2:length(dataRange)){

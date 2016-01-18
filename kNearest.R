@@ -3,13 +3,16 @@
 # i: x[i,]
 # k: the k nearest
 kNearest<-function(x,i,k=2){
+  library(parallel)
   xt<-x[i,]
-  distance<-unlist(apply(x,1,function(xx){
+  cl<-makeCluster(getOption("cl.cores",8))
+  distance<-parApply(cl,x,1,function(xx){
     return(euclidean(xx,xt))
-  }))
+  })
   location<-c(1:nrow(x))
   data<-data.frame(location,distance)
   dataSort<-data[order(data[,'distance']),]
   dataReturn<-dataSort[2:(k+1),]
+  stopCluster(cl)
   return(dataReturn)
 }

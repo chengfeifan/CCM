@@ -4,6 +4,7 @@
 #lag: Time lag
 #tag: the position of beginning to select the data
 dataSelect<-function(x,y,lag,tag,dimension){
+  library(parallel)
   x<-standize(x)
   y<-standize(y)
   xLen<-length(x)
@@ -13,8 +14,9 @@ dataSelect<-function(x,y,lag,tag,dimension){
     return(NULL)
   }
   else{
+    cl<-makeCluster(getOption("cl.cores",8))
     tag<-tag[which(tag+dimension*lag<xLen+1 & tag+dimension*lag>0)]
-    dataRange<-lapply(tag,function(tagdot){
+    dataRange<-parLapply(cl,tag,function(tagdot){
       xdot<-x[seq(tagdot,tagdot+dimension*lag,lag)]
       ydot<-y[tagdot+lag]
       return(list(xdot,ydot))
